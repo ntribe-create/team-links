@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리 팀 링크 창고</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EFF2F1;
+    --paper: #FFFFFF;
+    --ink: #1C1E1B;
+    --ink-soft: #5B5F5A;
+    --line: #D9DED9;
+    --accent-pink: #E24875;
+    --accent-yellow: #F2B705;
+    --accent-teal: #1D8A73;
+    --accent-blue: #2E6FDB;
+    --shadow: rgba(28, 30, 27, 0.10);
+    --pin: #C23A5E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15171A;
+      --paper: #1E2124;
+      --ink: #EDEFEC;
+      --ink-soft: #9BA09A;
+      --line: #33373A;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15171A;
+    --paper: #1E2124;
+    --ink: #EDEFEC;
+    --ink-soft: #9BA09A;
+    --line: #33373A;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  header.hero {
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    font-size: 13px;
+    color: var(--accent-pink);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.25;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .hero p {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 46ch;
+  }
+
+  .nickname-row {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .nickname-row .val {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .nickname-row button {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .nickname-row button:hover { color: var(--ink); }
+  .nickname-edit {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .nickname-edit.active { display: flex; }
+  .nickname-edit input {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 13.5px;
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    width: 160px;
+  }
+  .nickname-edit .save-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .nickname-edit .cancel-link {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 6px 20px var(--shadow);
+  }
+
+  form.add-form {
+    padding: 20px;
+    margin-bottom: 36px;
+  }
+  .add-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin: 14px 0 6px;
+  }
+  .add-form label:first-of-type { margin-top: 0; }
+  .add-form input[type="url"],
+  .add-form textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 11px 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  .add-form textarea { min-height: 64px; line-height: 1.5; }
+  .add-form input::placeholder,
+  .add-form textarea::placeholder { color: var(--ink-soft); opacity: 0.7; }
+  .add-form input:focus,
+  .add-form textarea:focus {
+    outline: 2px solid var(--accent-teal);
+    outline-offset: 1px;
+  }
+  .form-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .submit-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 999px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .form-status {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .form-status.err { color: var(--accent-pink); }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+
+  .search-box {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .search-box input {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 14px 11px 38px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .search-box input::placeholder { color: var(--ink-soft); opacity: 0.75; }
+  .search-box input:focus {
+    outline: 2px solid var(--accent-teal);
+    outline-offset: 1px;
+  }
+  .search-box .icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .no-results {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .item {
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: start;
+    position: relative;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    color: #fff;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .tag.youtube { background: var(--accent-pink); }
+  .tag.instagram { background: var(--accent-blue); }
+  .tag.etc { background: var(--accent-teal); }
+
+  .item-body { min-width: 0; }
+  .item-link {
+    display: block;
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--ink);
+    text-decoration: none;
+    word-break: break-all;
+    margin-bottom: 6px;
+  }
+  .item-link:hover { color: var(--accent-teal); }
+  .item-desc {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    white-space: pre-wrap;
+    margin: 0 0 8px;
+  }
+  .item-meta {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .item-meta .dot { margin: 0 6px; }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .del-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    justify-self: end;
+  }
+  .del-btn:hover { color: var(--accent-pink); background: rgba(226,72,117,0.08); }
+
+  .empty {
+    text-align: center;
+    padding: 46px 20px;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .empty .big { font-size: 30px; display: block; margin-bottom: 8px; }
+
+  .notice {
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .item { grid-template-columns: auto 1fr; }
+    .del-btn { grid-column: 2; justify-self: start; margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">팀 공유 아카이브</p>
+    <h1>보고 지나치면 끝이니까,<br>여기에 모아둬요.</h1>
+    <p>재밌게 본 쇼츠·릴스 링크에 한 줄 설명만 붙여서 남기면, 팀원 전체가 같이 보고 다시 찾아볼 수 있어요.</p>
+
+    <div class="nickname-row" id="nickname-row" style="display:none;">
+      <span>내 별명: <span class="val" id="nickname-val">-</span></span>
+      <button type="button" id="nickname-edit-btn">별명 설정</button>
+    </div>
+    <div class="nickname-edit" id="nickname-edit">
+      <input type="text" id="nickname-input" placeholder="예: 홍보1팀 김주무관" maxlength="20">
+      <button type="button" class="save-btn" id="nickname-save-btn">저장</button>
+      <button type="button" class="cancel-link" id="nickname-cancel-btn">취소</button>
+    </div>
+    <div style="margin-top:10px;">
+      <button type="button" id="show-my-id-btn" style="background:none;border:none;padding:0;font-size:11.5px;color:var(--ink-soft);opacity:0.6;cursor:pointer;text-decoration:underline;font-family:'Noto Sans KR',sans-serif;">내 관리자 아이디 확인</button>
+    </div>
+  </header>
+
+  <div id="notice-area"></div>
+
+  <form class="card add-form" id="add-form">
+    <label for="url-input">링크 주소</label>
+    <input type="url" id="url-input" placeholder="https://www.youtube.com/shorts/..." required>
+
+    <label for="desc-input">간단한 설명</label>
+    <textarea id="desc-input" placeholder="뭐가 재밌는지, 어디에 쓸 수 있을지 한두 줄로 적어주세요" required></textarea>
+
+    <div class="form-foot">
+      <span class="form-status" id="form-status"></span>
+      <button type="submit" class="submit-btn" id="submit-btn">저장하기</button>
+    </div>
+  </form>
+
+  <p class="section-label" id="list-label">모아둔 링크</p>
+
+  <div class="search-box">
+    <span class="icon">🔍</span>
+    <input type="text" id="search-input" placeholder="설명 내용으로 검색 (예: 축제, 캠페인, 웃긴 영상)">
+  </div>
+
+  <div class="list" id="list"></div>
+  <div class="no-results" id="no-results" style="display:none;">검색 결과가 없어요.</div>
+  <div class="empty" id="empty-state" style="display:none;">
+    <span class="big">🎞️</span>
+    아직 저장된 링크가 없어요.<br>제일 먼저 재밌었던 거 하나 공유해보세요.
+  </div>
+
+</div>
+
+<!-- ▼▼▼ Firebase 연결 부분입니다. 아래 안내를 따라 firebaseConfig 값만 바꿔주세요 ▼▼▼ -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script>
+  // 👇 여기 있는 내용을, Firebase 콘솔에서 복사한 나만의 firebaseConfig 값으로 통째로 바꿔주세요.
+  const firebaseConfig = {
+    apiKey: "여기에-붙여넣기",
+    authDomain: "여기에-붙여넣기",
+    projectId: "여기에-붙여넣기",
+    storageBucket: "여기에-붙여넣기",
+    messagingSenderId: "여기에-붙여넣기",
+    appId: "여기에-붙여넣기"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+<!-- ▲▲▲ 여기까지 ▲▲▲ -->
+
+<script>
+(function () {
+  const noticeArea = document.getElementById('notice-area');
+  const form = document.getElementById('add-form');
+  const urlInput = document.getElementById('url-input');
+  const descInput = document.getElementById('desc-input');
+  const submitBtn = document.getElementById('submit-btn');
+  const formStatus = document.getElementById('form-status');
+  const listEl = document.getElementById('list');
+  const emptyState = document.getElementById('empty-state');
+  const listLabel = document.getElementById('list-label');
+  const searchInput = document.getElementById('search-input');
+  const noResults = document.getElementById('no-results');
+  const nicknameRow = document.getElementById('nickname-row');
+  const nicknameVal = document.getElementById('nickname-val');
+  const nicknameEditBtn = document.getElementById('nickname-edit-btn');
+  const nicknameEdit = document.getElementById('nickname-edit');
+  const nicknameInput = document.getElementById('nickname-input');
+  const nicknameSaveBtn = document.getElementById('nickname-save-btn');
+  const nicknameCancelBtn = document.getElementById('nickname-cancel-btn');
+  const showMyIdBtn = document.getElementById('show-my-id-btn');
+
+  // 👇 관리자 아이디(UID)를 여기에 붙여넣으면, 그 사람은 모든 게시물을 삭제할 수 있어요.
+  //    처음엔 비워두세요. 사이트를 연 뒤 "내 관리자 아이디 확인" 버튼으로 내 아이디를 알아낸 다음 여기 채워 넣으면 됩니다.
+  const ADMIN_UID = "여기에-관리자-UID-붙여넣기";
+
+  let db = null;
+  let myId = null;
+  let canWrite = true;
+  let items = [];
+  let searchQuery = '';
+  let nicknames = {};
+
+  const AVATAR_COLORS = ['#E24875', '#2E6FDB', '#1D8A73', '#F2B705', '#8A56C7', '#C25A2B'];
+  function colorForId(id) {
+    if (!id) return '#9BA09A';
+    let h = 0;
+    for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+    return AVATAR_COLORS[h % AVATAR_COLORS.length];
+  }
+
+  function platformTag(url) {
+    try {
+      const host = new URL(url).hostname.replace('www.', '');
+      if (host.includes('youtube.com') || host.includes('youtu.be')) return { cls: 'youtube', label: '유튜브 쇼츠' };
+      if (host.includes('instagram.com')) return { cls: 'instagram', label: '인스타 릴스' };
+      return { cls: 'etc', label: host };
+    } catch (e) {
+      return { cls: 'etc', label: '링크' };
+    }
+  }
+
+  function timeAgo(ts) {
+    const diff = Date.now() - ts;
+    const min = Math.floor(diff / 60000);
+    if (min < 1) return '방금 전';
+    if (min < 60) return min + '분 전';
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return hr + '시간 전';
+    const day = Math.floor(hr / 24);
+    if (day < 7) return day + '일 전';
+    const d = new Date(ts);
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+  }
+
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+  function fullDateTime(ts) {
+    const d = new Date(ts);
+    return d.getFullYear() + '.' + pad2(d.getMonth() + 1) + '.' + pad2(d.getDate()) +
+      ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+
+  function showNotice(text) {
+    const div = document.createElement('div');
+    div.className = 'notice';
+    div.textContent = text;
+    noticeArea.appendChild(div);
+  }
+
+  async function render() {
+    if (items.length === 0) {
+      listEl.style.display = 'none';
+      noResults.style.display = 'none';
+      emptyState.style.display = 'block';
+      listLabel.textContent = '모아둔 링크';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    const q = searchQuery.trim().toLowerCase();
+    const filtered = q
+      ? items.filter(function (it) {
+          const desc = (it.description || '').toLowerCase();
+          const url = (it.url || '').toLowerCase();
+          return desc.indexOf(q) !== -1 || url.indexOf(q) !== -1;
+        })
+      : items;
+
+    listLabel.textContent = q
+      ? '검색 결과 (' + filtered.length + ')'
+      : '모아둔 링크 (' + items.length + ')';
+
+    if (filtered.length === 0) {
+      listEl.style.display = 'none';
+      noResults.style.display = 'block';
+      return;
+    }
+    listEl.style.display = 'flex';
+    noResults.style.display = 'none';
+
+    listEl.innerHTML = '';
+    for (const it of filtered) {
+      const tag = platformTag(it.url);
+      const name = nicknames[it.authorId] || '팀원';
+      const initial = name ? name.charAt(0) : '?';
+
+      const row = document.createElement('div');
+      row.className = 'card item';
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.style.background = colorForId(it.authorId);
+      avatar.textContent = initial;
+      row.appendChild(avatar);
+
+      const body = document.createElement('div');
+      body.className = 'item-body';
+
+      const tagEl = document.createElement('span');
+      tagEl.className = 'tag ' + tag.cls;
+      tagEl.textContent = tag.label;
+      body.appendChild(tagEl);
+
+      const link = document.createElement('a');
+      link.className = 'item-link';
+      link.href = it.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.style.display = 'block';
+      link.style.marginTop = '8px';
+      link.textContent = it.url;
+      body.appendChild(link);
+
+      const desc = document.createElement('p');
+      desc.className = 'item-desc';
+      desc.textContent = it.description || '';
+      body.appendChild(desc);
+
+      const meta = document.createElement('div');
+      meta.className = 'item-meta';
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = name;
+      meta.appendChild(nameSpan);
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      dot.textContent = '·';
+      meta.appendChild(dot);
+      const timeSpan = document.createElement('span');
+      timeSpan.textContent = fullDateTime(it.createdAt || Date.now());
+      timeSpan.title = timeAgo(it.createdAt || Date.now());
+      meta.appendChild(timeSpan);
+      const dot2 = document.createElement('span');
+      dot2.className = 'dot';
+      dot2.textContent = '·';
+      meta.appendChild(dot2);
+      const relSpan = document.createElement('span');
+      relSpan.textContent = timeAgo(it.createdAt || Date.now());
+      meta.appendChild(relSpan);
+      body.appendChild(meta);
+
+      row.appendChild(body);
+
+      const isAdmin = myId && ADMIN_UID && myId === ADMIN_UID;
+      if (myId && (it.authorId === myId || isAdmin)) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'del-btn';
+        delBtn.textContent = '삭제';
+        delBtn.addEventListener('click', () => deleteItem(it.id));
+        row.appendChild(delBtn);
+      } else {
+        const spacer = document.createElement('span');
+        row.appendChild(spacer);
+      }
+
+      listEl.appendChild(row);
+    }
+  }
+
+  async function deleteItem(id) {
+    if (!db) return;
+    try {
+      await db.collection('posts').doc(id).delete();
+    } catch (e) {
+      // ignore; UI will reconcile via subscription
+    }
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const url = urlInput.value.trim();
+    const description = descInput.value.trim();
+    if (!url || !description) return;
+
+    if (!db) {
+      formStatus.textContent = '저장 기능을 불러오는 중이에요. 잠시 후 다시 시도해주세요.';
+      formStatus.classList.add('err');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    formStatus.classList.remove('err');
+    formStatus.textContent = '저장 중...';
+
+    try {
+      await db.collection('posts').add({
+        url: url,
+        description: description,
+        authorId: myId || null,
+        createdAt: Date.now()
+      });
+      urlInput.value = '';
+      descInput.value = '';
+      formStatus.textContent = '저장했어요!';
+      setTimeout(() => { formStatus.textContent = ''; }, 2000);
+    } catch (err) {
+      formStatus.textContent = '저장하지 못했어요. 다시 시도해주세요.';
+      formStatus.classList.add('err');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  function refreshNicknameUI() {
+    if (!myId) return;
+    nicknameRow.style.display = 'flex';
+    nicknameVal.textContent = nicknames[myId] || '(설정 안 함)';
+  }
+
+  nicknameEditBtn.addEventListener('click', function () {
+    nicknameInput.value = nicknames[myId] || '';
+    nicknameEdit.classList.add('active');
+    nicknameInput.focus();
+  });
+  nicknameCancelBtn.addEventListener('click', function () {
+    nicknameEdit.classList.remove('active');
+  });
+  nicknameSaveBtn.addEventListener('click', async function () {
+    if (!db || !myId) return;
+    const val = nicknameInput.value.trim();
+    if (!val) return;
+    nicknameSaveBtn.disabled = true;
+    try {
+      await db.doc('nicknames/' + myId).set({ name: val });
+      nicknameEdit.classList.remove('active');
+    } catch (e) {
+      // leave editor open so they can retry
+    } finally {
+      nicknameSaveBtn.disabled = false;
+    }
+  });
+
+  searchInput.addEventListener('input', function () {
+    searchQuery = searchInput.value;
+    render();
+  });
+
+  showMyIdBtn.addEventListener('click', function () {
+    if (!myId) {
+      alert('아직 아이디를 불러오는 중이에요. 잠시 후 다시 눌러주세요.');
+      return;
+    }
+    alert('내 아이디: ' + myId + '\n\n이 값을 복사해서, 코드의 ADMIN_UID 자리와 Firestore 보안 규칙에 붙여넣으면 관리자가 돼요.');
+  });
+
+  async function init() {
+    try {
+      db = firebase.firestore();
+    } catch (e) {
+      db = null;
+      showNotice('저장 기능을 불러오지 못했어요. firebaseConfig 값이 올바른지 확인해주세요.');
+      submitBtn.disabled = true;
+      return;
+    }
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        myId = user.uid;
+        refreshNicknameUI();
+        render();
+      }
+    });
+    firebase.auth().signInAnonymously().catch(function (e) {
+      showNotice('로그인에 실패했어요. Firebase 콘솔에서 익명 로그인이 켜져 있는지 확인해주세요.');
+    });
+
+    db.collection('nicknames').onSnapshot(
+      function (snap) {
+        const map = {};
+        snap.docs.forEach(function (d) {
+          const data = d.data();
+          if (data && data.name) map[d.id] = data.name;
+        });
+        nicknames = map;
+        refreshNicknameUI();
+        render();
+      },
+      function (err) { /* keep last known nicknames */ }
+    );
+
+    const q = db.collection('posts').orderBy('createdAt', 'desc').limit(300);
+    q.onSnapshot(
+      function (snap) {
+        items = snap.docs.map(function (d) {
+          const data = d.data();
+          return {
+            id: d.id,
+            url: data.url,
+            description: data.description,
+            authorId: data.authorId,
+            createdAt: data.createdAt
+          };
+        });
+        render();
+      },
+      function (err) {
+        showNotice('목록을 불러오는 중 문제가 발생했어요.');
+      }
+    );
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
